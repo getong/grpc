@@ -73,7 +73,7 @@
 %% the 'State' parameter that is passed to the first invocation (per stream) of
 %% the generated RPC skeleton functions. The default value is 'undefined'. See
 %% the implementation of 'RecordRoute' in the tutorial for an example.
--opaque stream() :: map().
+-type stream() :: map().
 
 -export_type([option/0,
               services/0,

@@ -1,22 +1,16 @@
 {"1.1.0",
-[{<<"cowboy">>,
-  {git,"https://github.com/ninenines/cowboy",
-       {ref,"a66eb5cd6e6c6b7a1948e3dde53a56017705a4f4"}},
-  0},
- {<<"cowlib">>,
-  {git,"https://github.com/ninenines/cowlib",
-       {ref,"824d807225f9b6f692be365635e1792c20cf9ad0"}},
-  1},
- {<<"gpb">>,{pkg,<<"gpb">>,<<"4.0.2">>},1},
+[{<<"cowboy">>,{pkg,<<"cowboy">>,<<"2.6.1">>},0},
+ {<<"cowlib">>,{pkg,<<"cowlib">>,<<"2.7.0">>},1},
+ {<<"gpb">>,{pkg,<<"gpb">>,<<"4.4.0">>},1},
  {<<"grpc_lib">>,
   {git,"https://github.com/Bluehouse-Technology/grpc_lib",
-       {ref,"1f195cfb52f9243ae67934da2e49498ba04578cd"}},
+       {ref,"a77686b55b60b052d6c7cd927d04dde429bbdabf"}},
   0},
- {<<"ranch">>,
-  {git,"https://github.com/ninenines/ranch",
-       {ref,"55c2a9d623454f372a15e99721a37093d8773b48"}},
-  1}]}.
+ {<<"ranch">>,{pkg,<<"ranch">>,<<"1.7.1">>},1}]}.
 [
 {pkg_hash,[
- {<<"gpb">>, <<"43CF080145BC5A8DFD4BB53FA3FD638469E0B3F0ADC1D283B26D7D934FC67267">>}]}
+ {<<"cowboy">>, <<"F2E06F757C337B3B311F9437E6E072B678FCD71545A7B2865BDAA154D078593F">>},
+ {<<"cowlib">>, <<"3EF16E77562F9855A2605900CEDB15C1462D76FB1BE6A32FC3AE91973EE543D2">>},
+ {<<"gpb">>, <<"CFD81B167F804B5A3720D7867530F6700E54644284431E4E14E032139C205251">>},
+ {<<"ranch">>, <<"6B1FAB51B49196860B733A49C07604465A47BDB78AA10C1C16A3D199F7F8C881">>}]}
 ].
