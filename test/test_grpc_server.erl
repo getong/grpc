@@ -1,4 +1,4 @@
-%% Can be used to test the Erlang server implementation against the 
+%% Can be used to test the Erlang server implementation against the
 %% go client
 %%
 %% The go example client can be found here:
@@ -34,8 +34,8 @@ run(How) ->
     {ok, _} = compile:file(filename:join(test_dir(),
                                          "test_route_guide_server.erl")),
     {ok, _} = grpc:start_server(grpc, How, 10000,
-                                #{'RouteGuide' => #{handler => test_route_guide_server}}, 
-                                options(How)). 
+                                #{'RouteGuide' => #{handler => test_route_guide_server}},
+                                options(How)).
 
 stop() ->
     grpc:stop_server(grpc).
@@ -43,7 +43,7 @@ stop() ->
 options(tcp) ->
     [];
 options(ssl) ->
-    [{transport_options, 
+    [{transport_options,
       [{certfile, certificate("localhost.crt")},
        {keyfile, certificate("localhost.key")},
        {cacertfile, certificate("My_Root_CA.crt")}]}].
@@ -53,7 +53,7 @@ compile() ->
     {ok, _} = compile:file("route_guide.erl").
 
 example_dir() ->
-    filename:join(code:lib_dir(grpc, examples), "route_guide").
+    filename:join(code:lib_dir(grpc, '../../../../examples'), "route_guide").
 
 test_dir() ->
     code:lib_dir(grpc, test).

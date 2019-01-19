@@ -180,7 +180,7 @@ all() ->
 %%-------------------------------------------------------------------------
 
 compile_routeguide_proto(_Config) ->
-    ExampleDir = filename:join(code:lib_dir(grpc, examples), "route_guide"),
+    ExampleDir = filename:join(code:lib_dir(grpc, '../../../../examples'), "route_guide"),
     ok = grpc:compile("route_guide.proto", [{i, ExampleDir}]),
     ok = grpc_client:compile("route_guide.proto", [{i, ExampleDir}]),
     true = lists:all(fun (F) ->
@@ -591,7 +591,7 @@ wrong_client_certificate(Config) ->
 %% Internal functions
 %% ----------------------------------------------------------------------------
 compile_example(File) ->
-    ExampleDir = filename:join([code:lib_dir(grpc, examples),
+    ExampleDir = filename:join([code:lib_dir(grpc, '../../../../examples'),
                                 "route_guide",
                                 "server"]),
     {ok, _} = compile:file(filename:join(ExampleDir, File)).

@@ -3,7 +3,7 @@
 -compile(export_all).
 
 %%--------------------------------------------------------------------
-%% Run tests via erlang.mk: 
+%% Run tests via erlang.mk:
 %% $> make ct
 %% or:
 %% $> make SKIP_DEPS=1 ct
@@ -26,10 +26,10 @@
 
 %%--------------------------------------------------------------------
 %% Function: suite() -> DefaultData
-%% DefaultData: [tuple()]  
+%% DefaultData: [tuple()]
 %% Description: Require variables and set default values for the suite
 %%--------------------------------------------------------------------
-suite() -> 
+suite() ->
     [{timetrap, {seconds, 5}}].
 
 %%--------------------------------------------------------------------
@@ -101,12 +101,12 @@ end_per_group(_, _Config) ->
 
 %%--------------------------------------------------------------------
 %% Function: all() -> TestCases
-%% TestCases: [Case] 
+%% TestCases: [Case]
 %% Case: atom()
 %%   Name of a test case.
 %% Description: Returns a list of all test cases in this test suite
-%%--------------------------------------------------------------------      
-all() -> 
+%%--------------------------------------------------------------------
+all() ->
     [
      {group, tutorial}
     ].
@@ -116,12 +116,12 @@ all() ->
 %%-------------------------------------------------------------------------
 
 compile_routeguide_proto(_Config) ->
-    ExampleDir = filename:join(code:lib_dir(grpc, examples), "route_guide"),
+    ExampleDir = filename:join(code:lib_dir(grpc, '../../../../examples'), "route_guide"),
     ok = grpc:compile("route_guide.proto", [{i, ExampleDir}]),
     ok = grpc_client:compile("route_guide.proto", [{i, ExampleDir}]),
     true = lists:all(fun (F) ->
-                         filelib:is_file(F) 
-                     end, 
+                         filelib:is_file(F)
+                     end,
                      ["route_guide.erl",
                       "route_guide_server.erl",
                       "route_guide_client.erl"
@@ -158,9 +158,9 @@ continuation_resp(Config) ->
 
 run_listfeatures(Config) ->
     {ok, Connection} = grpc_client:connect(tcp, "localhost", port(Config)),
-    {ok, Stream} = grpc_client:new_stream(Connection, 'RouteGuide', 
+    {ok, Stream} = grpc_client:new_stream(Connection, 'RouteGuide',
                                             'ListFeatures', route_guide),
-    P1 = ?BVM_TRAIL_POINT, 
+    P1 = ?BVM_TRAIL_POINT,
     P2 = ?BVM_TRAIL_POINT,
     ok = grpc_client:send_last(Stream, #{lo => P1, hi => P2}),
     %% A little bit of time will pass before the response arrives...
@@ -188,24 +188,24 @@ routechat_throttled(Config) ->
 route_chat(Config, ConnectionOptions, StreamOptions) ->
     {ok, Connection} = grpc_client:connect(tcp, "localhost",
                                            port(Config), ConnectionOptions),
-    {ok, Stream} = grpc_client:new_stream(Connection, 'RouteGuide', 
-                                          'RouteChat', route_guide, 
+    {ok, Stream} = grpc_client:new_stream(Connection, 'RouteGuide',
+                                          'RouteChat', route_guide,
                                           StreamOptions),
     %% use random points so that the server can remain running between
     %% tests
-    P1 = #{latitude => rand:uniform(100000), 
-           longitude => rand:uniform(100000)}, 
+    P1 = #{latitude => rand:uniform(100000),
+           longitude => rand:uniform(100000)},
     P2 = #{latitude => rand:uniform(100000),
-           longitude => rand:uniform(100000)}, 
+           longitude => rand:uniform(100000)},
     %% get communication going
-    ok = grpc_client:send(Stream, #{location => P1, 
+    ok = grpc_client:send(Stream, #{location => P1,
                                     message => "something about P1"}),
     timer:sleep(500),
     {headers, _}  = grpc_client:get(Stream),
     Msg1  = grpc_client:get(Stream),
     io:format("Msg 1: ~p~n", [Msg1]),
 
-    %% for i = 1 to n: send a message to and receive back i messages. 
+    %% for i = 1 to n: send a message to and receive back i messages.
     %% 17 bytes are used for the coordinates etc., so 2000 - 17 results in
     %% a payload of 2000 bytes
     LongMessage = [$a || _ <- lists:seq(1, 2000 - 17)],
@@ -238,9 +238,9 @@ ping_timeout(Config) ->
 
 run_recordroute(Config) ->
     {ok, Connection} = grpc_client:connect(tcp, "localhost", port(Config)),
-    {ok, Stream} = grpc_client:new_stream(Connection, 'RouteGuide', 
+    {ok, Stream} = grpc_client:new_stream(Connection, 'RouteGuide',
                                             'RecordRoute', route_guide),
-    P1 = #{latitude => 1, longitude => 2}, 
+    P1 = #{latitude => 1, longitude => 2},
     P2 = #{latitude => 3, longitude => 5},
     ok = grpc_client:send(Stream, P1),
     ok = grpc_client:send_last(Stream, P2),
@@ -253,9 +253,9 @@ receive_many_messages(Config) ->
     Size = 3000,
     Options = [{metadata, #{<<"nr_of_points">> => integer_to_binary(Count),
                             <<"size">> => integer_to_binary(Size)}}],
-    {ok, Stream} = grpc_client:new_stream(Connection, 'RouteGuide', 
+    {ok, Stream} = grpc_client:new_stream(Connection, 'RouteGuide',
                                           'ListFeatures', route_guide, Options),
-    P1 = #{latitude => 1, longitude => 2}, 
+    P1 = #{latitude => 1, longitude => 2},
     P2 = #{latitude => 3, longitude => 5},
     ok = grpc_client:send_last(Stream, #{hi => P1, lo => P2}),
     %% A little bit of time will pass before the response arrives...
@@ -280,8 +280,8 @@ secure_request(Config) ->
 tls_connection_fails(Config) ->
     %% Fails because the client does not provide a certificate
     process_flag(trap_exit, true),
-    %%VerifyFun = fun(Certificate, Event, []) -> 
-                    %%ct:pal("Certificate: ~p~nEvent: ~p~n", 
+    %%VerifyFun = fun(Certificate, Event, []) ->
+                    %%ct:pal("Certificate: ~p~nEvent: ~p~n",
                            %%[Certificate, Event]),
                     %%{valid, []}
                 %%end,
@@ -291,7 +291,7 @@ tls_connection_fails(Config) ->
                                                     certificate("My_Root_CA.crt")}]}}
                                ]}
               ],
-    {error, {tls_alert, "handshake failure"}} = 
+    {error, {tls_alert, "handshake failure"}} =
         grpc_client:connect(ssl, "localhost", port(Config), Options).
 
 ssl_without_server_identification(Config) ->
@@ -314,7 +314,7 @@ authenticated_request(Config) ->
 wrong_client_certificate(Config) ->
     process_flag(trap_exit, true),
     %% Provide a certificate that is not in the list of certificates
-    %% that is accepted by the server. (Reusing "localhost" for that 
+    %% that is accepted by the server. (Reusing "localhost" for that
     %% purpose).
     TlsOptions = [{certfile, certificate("localhost.crt")},
                   {keyfile, certificate("localhost.key")},
@@ -332,7 +332,7 @@ feature(Connection, Message) ->
     feature(Connection, Message, []).
 
 feature(Connection, Message, Options) ->
-    grpc_client:unary(Connection, Message, 'RouteGuide', 
+    grpc_client:unary(Connection, Message, 'RouteGuide',
                       'GetFeature', route_guide, Options).
 
 %% Example certificates are in "test/certificates".
@@ -341,7 +341,7 @@ cert_dir() ->
     true = filelib:is_dir(CertDir),
     CertDir.
 
-%% This directory contains the certifcates of the clients that are 
+%% This directory contains the certifcates of the clients that are
 %% accepted by the server.
 client_cert_dir() ->
     ClientCertDir = filename:join([cert_dir(), "clients"]),
